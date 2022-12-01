@@ -2,25 +2,7 @@
   {
     "uuid": "0J7Tdim-W",
     "name": "1",
-    "done": false,
-    "createdAt": "2022-12-2T15:36:20.196Z"
-  },
-  {
-    "uuid": "7_8kVXKxL",
-    "name": "2",
     "done": true,
-    "createdAt": "2022-11-30T15:36:20.196Z"
-  },
-  {
-    "uuid": "5ZiaAL6vM",
-    "name": "B1as",
-    "done": false,
-    "createdAt": "2022-12-2T20:36:20.196Z"
-  },
-  {
-    "uuid": "SS5k4qHRx",
-    "name": "1212",
-    "done": false,
-    "createdAt": "2022-12-2T20:36:20.196Z"
+    "createdAt": "2022-12-2T15:36:20.196Z"
   }
 ]

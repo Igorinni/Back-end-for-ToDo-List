@@ -2,8 +2,7 @@ const read = require("../read");
 const write = require("../write");
 const shortId = require("shortid");
 
-class Controller {
-
+class ControllerTask {
   async createTask(req, res) {
     try {
       const tasks = read();
@@ -21,9 +20,11 @@ class Controller {
     try {
       const id = req.params.id;
       const tasks = read();
-      const newTasks = tasks.filter((item) => item.uuid != id);
-      write(newTasks);
-      res.status(204);
+      const indexTask = tasks.findIndex((item) => item.uuid === id);
+      tasks.splice(indexTask, 1);
+      if (indexTask === -1) return res.status(400).json("Error: no such task");
+      write(tasks);
+      res.status(202).json("Task delete");
     } catch (error) {
       res.status(500).json("Error on server");
       console.log(error);
@@ -49,4 +50,4 @@ class Controller {
   }
 }
 
-module.exports = Controller;
+module.exports = ControllerTask;

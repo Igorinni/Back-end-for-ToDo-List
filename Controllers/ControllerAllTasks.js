@@ -1,7 +1,7 @@
 const read = require("../read");
 const write = require("../write");
 
-class ControllerTasks {
+class ControllerAllTasks {
   async getTasks(req, res) {
     try {
       const tasks = read();
@@ -46,8 +46,7 @@ class ControllerTasks {
       res.status(500).json("Error on server");
       console.log(error);
     }
+  }
 }
 
-}
-
-module.exports = ControllerTasks;
+module.exports = ControllerAllTasks;
