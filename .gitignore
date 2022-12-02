@@ -1,2 +1,7 @@
 /node_modules
 .env
+/src/working-with-tasks/tasks.json
+
+
+/src/middlewares/middleware.js
+/src/controllers/tasks-controller.js
