@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use(errorMiddleware);
 
-app.use("/tasks", tasksRoutes);
+app.use(process.env.TASKS, tasksRoutes);
 
 app.listen(PORT, () => {
   console.log(`Good! Server starting on port ${PORT}...`);
