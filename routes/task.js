@@ -4,8 +4,8 @@ const ControllerTask = require("../Controllers/ControllerTask.js");
 
 const controller = new ControllerTask();
 
-router.post(`${process.env.TASK}`, controller.createTask);
-router.delete(`${process.env.TASK}/:id`, controller.deleteTask);
-router.patch(`${process.env.TASK}/:id`, controller.updateTask);
+router.post('/', controller.createTask);
+router.delete('/:id', controller.deleteTask);
+router.patch('/:id', controller.updateTask);
 
 module.exports = router;
