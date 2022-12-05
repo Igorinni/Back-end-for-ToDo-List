@@ -1,32 +1,32 @@
-const actionsTasks = require("../working-with-tasks/actionsTasks.js");
+const express = require("express");
+const router = express.Router();
+const actionsTasks = require("../utils/tasks-helper.js");
 
-const getTasks = async (req, res) => {
+router.get(process.env.TASKS, async (req, res) => {
   try {
-    const tasks = actionsTasks.read();
+    let tasks = await actionsTasks.read();
 
     if (req.query.order === "asc")
       tasks.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
     if (req.query.order === "desc")
       tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-    let responseTasks = [...tasks];
-
     if (req.query.filterBy) {
       const filterBy = req.query.filterBy === "done" ? true : false;
-      responseTasks = responseTasks.filter((item) => item.done === filterBy);
+      tasks = tasks.filter((item) => item.done === filterBy);
     }
 
-    let displayTasks = [...responseTasks];
+    const count = tasks.length;
 
     if (req.query.page) {
       const lastTask = req.query.pp * req.query.page;
       const firstTask = lastTask - req.query.pp;
-      displayTasks = responseTasks.slice(firstTask, lastTask);
+      tasks = tasks.slice(firstTask, lastTask);
     }
 
     const resObj = {
-      count: displayTasks.length,
-      tasks: displayTasks,
+      count: count,
+      tasks: tasks,
     };
 
     res.status(200).json(resObj);
@@ -34,6 +34,6 @@ const getTasks = async (req, res) => {
     res.status(500).json("Error on server");
     console.log(error);
   }
-};
+});
 
-module.exports = getTasks;
+module.exports = router;

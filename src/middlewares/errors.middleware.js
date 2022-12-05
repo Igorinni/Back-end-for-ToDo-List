@@ -1,7 +1,8 @@
-const actionsTasks = require("../../src/working-with-tasks/actionsTasks");
-const tasks = actionsTasks.read();
+const actionsTasks = require("../utils/tasks-helper");
 
 const errorMiddleware = async (req, res, next) => {
+  const tasks = await actionsTasks.read();
+  /* 
   if (req.method === "POST" || req.method === "PATCH") {
     const sumProperty = [];
 
@@ -29,7 +30,7 @@ const errorMiddleware = async (req, res, next) => {
     }
 
     next();
-  }
+  } */
 
   next();
 };
