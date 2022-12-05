@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const actionsTasks = require("../utils/tasks-helper.js");
+const tasksHelper = require("../utils/tasks-helper.js");
 
-router.get(process.env.TASKS, async (req, res) => {
+router.get("/tasks", async (req, res) => {
   try {
-    let tasks = await actionsTasks.read();
+    let tasks = await tasksHelper.read();
 
     if (req.query.order === "asc")
       tasks.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
