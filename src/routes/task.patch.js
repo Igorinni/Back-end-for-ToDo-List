@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const tasksHelper = require("../utils/tasks-helper.js");
+const { body, validationResult } = require("express-validator");
 
 router.patch(
   "/task/:id",
@@ -8,11 +9,10 @@ router.patch(
   body("name")
     .trim()
     .notEmpty()
-    .withMessage("String is empty")
-    .isString()
-    .withMessage("Type is not string")
-    .isLength({ max: 150 }),
-  body("done").notEmpty().toBoolean().withMessage("Type is not boolean"),
+    .withMessage("Field is empty")
+    .isLength({ max: 150 })
+    .withMessage("Too many characters"),
+  body("done").notEmpty().isBoolean().withMessage("Type is not boolean"),
   body("createdAt").notEmpty(),
 
   async (req, res) => {
@@ -23,11 +23,18 @@ router.patch(
       }
 
       const tasks = await tasksHelper.read();
+      const taskExisting = tasks.find((item) => item.name === req.body.name);
+
+      if (taskExisting && taskExisting.uuid !== req.params.id) {
+        return res
+          .status(422)
+          .json({ message: "Error: this task already exists" });
+      }
 
       if (
-        tasks.find(
-          (item) => item.name === req.body.name && item.done === req.body.done
-        )
+        taskExisting &&
+        taskExisting.uuid === req.params.id &&
+        taskExisting.done === req.body.done
       ) {
         return res
           .status(422)

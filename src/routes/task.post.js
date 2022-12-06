@@ -10,11 +10,10 @@ router.post(
   body("name")
     .trim()
     .notEmpty()
-    .withMessage("String is empty")
-    .isString()
-    .withMessage("Type is not string")
-    .isLength({ max: 150 }),
-  body("done").notEmpty().toBoolean().withMessage("Type is not boolean"),
+    .withMessage("Field is empty")
+    .isLength({ max: 150 })
+    .withMessage("Too many characters"),
+  body("done").notEmpty().isBoolean().withMessage("Type is not boolean"),
   body("createdAt").notEmpty(),
 
   async (req, res) => {
