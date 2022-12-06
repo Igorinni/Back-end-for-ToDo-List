@@ -2,4 +2,4 @@
 .env
 /src/utils/tasks.json
 
-/src/middlewares/middleware.js
+/src/middleware.js

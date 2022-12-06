@@ -37,6 +37,7 @@ router.post(
         done: req.body.done,
         createdAt: req.body.createdAt,
       };
+
       const newTasks = [...tasks, newTask];
       await tasksHelper.write(newTasks);
       res.status(201).json("Task added successfully");
