@@ -34,7 +34,7 @@ router.post(
           .json({ message: "Error: this task already exists" });
       }
 
-      db.Tasks.create({
+      await db.Tasks.create({
         name,
         done,
         createdAt,
