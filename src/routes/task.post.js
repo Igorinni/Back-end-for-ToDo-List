@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const tasksHelper = require("../utils/tasks-helper.js");
-const shortId = require("shortid");
 const { body, validationResult } = require("express-validator");
+
+const db = require("../../models/index");
 
 router.post(
   "/task",
@@ -14,7 +14,6 @@ router.post(
     .isLength({ max: 150 })
     .withMessage("Too many characters"),
   body("done").notEmpty().isBoolean().withMessage("Type is not boolean"),
-  body("createdAt").notEmpty(),
 
   async (req, res) => {
     try {
@@ -23,23 +22,24 @@ router.post(
         return res.status(400).json({ errors: errors.array() });
       }
 
-      const tasks = await tasksHelper.read();
+      const { name, done, createdAt } = req.body;
 
-      if (tasks.find((item) => item.name === req.body.name)) {
+      const thisName = await db.Tasks.findOne({
+        where: { name },
+      });
+
+      if (thisName) {
         return res
           .status(422)
           .json({ message: "Error: this task already exists" });
       }
 
-      const newTask = {
-        uuid: shortId.generate(),
-        name: req.body.name,
-        done: req.body.done,
-        createdAt: req.body.createdAt,
-      };
+      db.Tasks.create({
+        name,
+        done,
+        createdAt,
+      });
 
-      const newTasks = [...tasks, newTask];
-      await tasksHelper.write(newTasks);
       res.status(201).json("Task added successfully");
     } catch (error) {
       res.status(500).json("Error on server");

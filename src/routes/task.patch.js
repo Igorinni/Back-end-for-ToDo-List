@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const tasksHelper = require("../utils/tasks-helper.js");
 const { body, validationResult } = require("express-validator");
+const db = require("../../models/index");
 
 router.patch(
   "/task/:id",
@@ -13,7 +13,6 @@ router.patch(
     .isLength({ max: 150 })
     .withMessage("Too many characters"),
   body("done").notEmpty().isBoolean().withMessage("Type is not boolean"),
-  body("createdAt").notEmpty(),
 
   async (req, res) => {
     try {
@@ -22,10 +21,13 @@ router.patch(
         return res.status(400).json({ errors: errors.array() });
       }
 
-      const tasks = await tasksHelper.read();
-      const taskExisting = tasks.find((item) => item.name === req.body.name);
+      const id = req.params.id;
+      const { name, done, createdAt } = req.body;
+      const taskExisting = await db.Tasks.findOne({
+        where: { name: name },
+      });
 
-      if (taskExisting && taskExisting.uuid !== req.params.id) {
+      if (taskExisting && taskExisting.uuid !== id) {
         return res
           .status(422)
           .json({ message: "Error: this task already exists" });
@@ -33,21 +35,20 @@ router.patch(
 
       if (
         taskExisting &&
-        taskExisting.uuid === req.params.id &&
-        taskExisting.done === req.body.done
+        taskExisting.uuid === id &&
+        taskExisting.done === done
       ) {
         return res
           .status(422)
           .json({ message: "Error: this task already exists" });
       }
 
-      const { name, done, createdAt } = req.body;
-      let task = tasks.find((item) => item.uuid === req.params.id);
-      task.name = name;
-      task.done = done;
-      task.createdAt = createdAt;
-
-      await tasksHelper.write(tasks);
+      await db.Tasks.update(
+        { name, done, createdAt },
+        {
+          where: { uuid: id },
+        }
+      );
 
       res.status(200).json("Update task");
     } catch (error) {

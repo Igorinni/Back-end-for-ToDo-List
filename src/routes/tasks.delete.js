@@ -1,13 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const tasksHelper = require("../utils/tasks-helper.js");
+const db = require("../../models/index");
 
 router.delete("/tasks", async (req, res) => {
   try {
-    const arrayTasks = await tasksHelper.read();
-    arrayTasks.length === 0 &&
-      res.status(422).json("Error: All tasks have already been deleted ");
-    await tasksHelper.write([]);
+    const tasks = await db.Tasks.findAll();
+
+    if (tasks.length === 0) {
+      return res
+        .status(422)
+        .json("Error: All tasks have already been deleted ");
+    }
+
+    await db.Tasks.destroy({
+      truncate: true,
+    });
+
     res.status(204).json("All tasks are deleted");
   } catch (error) {
     res.status(500).json("Error on server");

@@ -1,15 +1,15 @@
 const express = require("express");
-const config = require("config");
 const recursive = require("recursive-readdir-sync");
+require('dotenv').config()
 
-const PORT = config.get("port") || 3001;
+const PORT = process.env.PORT || 3001;
 const app = express();
 const db = require("./models/index");
 
 const beginтing = (async function () {
 
   try {
-    await db.sequelize.sync();
+  
     await db.sequelize.authenticate();
 
     app.use(express.json());
