@@ -9,8 +9,8 @@ router.get("/tasks", async (req, res) => {
         done: req.query.filterBy === "done" ? true : false,
       },
       order: req.query.order ? [["createdAt", req.query.order]] : null,
-      limit: req.query.pp,
-      offset: req.query.pp * req.query.page - req.query.pp,
+      limit: req.query.pp || null,
+      offset: req.query.pp * req.query.page - req.query.pp || null,
     });
 
     res.status(200).json(resObj);
