@@ -1,17 +1,16 @@
 const express = require("express");
 const recursive = require("recursive-readdir-sync");
-require('dotenv').config()
+require("dotenv").config();
+const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 const db = require("./models/index");
 
 const beginтing = (async function () {
-
   try {
-  
     await db.sequelize.authenticate();
-
+    app.use(cors());
     app.use(express.json());
 
     recursive(`${__dirname}/src/routes`).forEach((file) =>
@@ -24,5 +23,4 @@ const beginтing = (async function () {
   } catch (error) {
     console.log(error);
   }
-
-}());
+})();
