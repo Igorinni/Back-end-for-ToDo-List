@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
-const classTasks = require("../../models/tasks")
-const Tasks = classTasks(db.sequelize)
+const classTasks = require("../../models/tasks");
+const Tasks = classTasks(db.sequelize);
 
 router.delete("/task/:id", async (req, res) => {
   try {
@@ -25,7 +24,11 @@ router.delete("/task/:id", async (req, res) => {
 
     res.status(204).json("Task delete");
   } catch (error) {
-    unhandledRejection(res, error);
+    console.log(error);
+    res.status(400).json({
+      success: false,
+      message: "Failed to delete the task :(",
+    });
   }
 });
 

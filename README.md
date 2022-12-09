@@ -22,20 +22,20 @@ This project is designed to control tasks: -receiving, -adding, -deleting, -edit
 
 To get a list of all tasks: 
 1) use the GET method 
-2) enter the URL: http://localhost:5000/process.env.TASKS
+2) enter the URL: http://localhost:5000/tasks
 
 To add a task to the list:
 1) use the POST method
-2) enter the URL: http://localhost:5000/process.env.TASKS/task
+2) enter the URL: http://localhost:5000/task
 
 To change a task:
 1) use the PATCH method
-2) enter the URL: http://localhost:5000/process.env.TASKS/task/id
+2) enter the URL: http://localhost:5000/task/id
 
 To delete a task:
 1) use the DELETE method
-2) enter the URL: http://localhost:5000/process.env.TASKS/task/id
+2) enter the URL: http://localhost:5000/task/id
 
 To delete all tasks:
 1) use the DELETE method
-2) enter the URL: http://localhost:5000/process.env.TASKS
+2) enter the URL: http://localhost:5000/tasks

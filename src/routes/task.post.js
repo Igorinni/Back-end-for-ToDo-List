@@ -4,7 +4,6 @@ const {
   bodyRequest,
   validateRequest,
 } = require("../middlewares/validation.middleware.js");
-const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
 const classTasks = require("../../models/tasks");
 const Tasks = classTasks(db.sequelize);
@@ -17,7 +16,7 @@ router.post(
 
   async (req, res) => {
     try {
-      const { name, done, createdAt } = req.body;
+      const { name, done } = req.body;
 
       const thisName = await Tasks.findOne({
         where: { name },
@@ -32,12 +31,16 @@ router.post(
       await Tasks.create({
         name,
         done,
-        createdAt,
+        createdAt: new Date(),
       });
-
+      
       res.status(201).json("Task added successfully");
     } catch (error) {
-      unhandledRejection(res, error);
+      console.log(error);
+      res.status(400).json({
+        success: false,
+        message: "Failed to create a task :(",
+      });
     }
   }
 );

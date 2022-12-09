@@ -4,7 +4,6 @@ const {
   bodyRequest,
   validateRequest,
 } = require("../middlewares/validation.middleware.js");
-const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
 const classTasks = require("../../models/tasks");
 const Tasks = classTasks(db.sequelize);
@@ -18,7 +17,7 @@ router.patch(
   async (req, res) => {
     try {
       const id = req.params.id;
-      const { name, done, createdAt } = req.body;
+      const { name, done } = req.body;
       const taskExisting = await Tasks.findOne({
         where: { name: name },
       });
@@ -40,7 +39,7 @@ router.patch(
       }
 
       await Tasks.update(
-        { name, done, createdAt },
+        { name, done },
         {
           where: { uuid: id },
         }
@@ -48,7 +47,11 @@ router.patch(
 
       res.status(200).json("Update task");
     } catch (error) {
-      unhandledRejection(res, error);
+      console.log(error);
+      res.status(400).json({
+        success: false,
+        message: "Failed to update the task :(",
+      });
     }
   }
 );

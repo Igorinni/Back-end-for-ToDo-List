@@ -8,7 +8,6 @@ const bodyRequest = [
     .isLength({ max: 150 })
     .withMessage("Too many characters"),
   body("done").notEmpty().isBoolean().withMessage("Type is not boolean"),
-  body("createdAt").notEmpty(),
 ];
 
 const validateRequest = (req, res, next) => {
