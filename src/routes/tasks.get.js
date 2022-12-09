@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
+const classTasks = require("../../models/tasks")
+const Tasks = classTasks(db.sequelize)
 
 router.get("/tasks", async (req, res) => {
   try {
-    const resObj = await db.Tasks.findAndCountAll({
+    const resObj = await Tasks.findAndCountAll({
       where: req.query.filterBy && {
         done: req.query.filterBy === "done" ? true : false,
       },

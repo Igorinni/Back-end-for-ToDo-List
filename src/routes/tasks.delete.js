@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
+const classTasks = require("../../models/tasks")
+const Tasks = classTasks(db.sequelize)
 
 
 router.delete("/tasks", async (req, res) => {
   try {
-    const tasks = await db.Tasks.findAll();
+    const tasks = await Tasks.findAll();
 
     if (tasks.length === 0) {
       return res
@@ -14,7 +16,7 @@ router.delete("/tasks", async (req, res) => {
         .json("Error: All tasks have already been deleted ");
     }
 
-    await db.Tasks.destroy({
+    await Tasks.destroy({
       truncate: true,
     });
 

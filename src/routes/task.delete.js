@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../../models/index");
 const unhandledRejection = require("../utils/unhandledRejection");
+const db = require("../../models/index");
+const classTasks = require("../../models/tasks")
+const Tasks = classTasks(db.sequelize)
 
 router.delete("/task/:id", async (req, res) => {
   try {
     const id = req.params.id;
 
-    const thisTask = await db.Tasks.findOne({
+    const thisTask = await Tasks.findOne({
       where: { uuid: id },
     });
 
@@ -15,7 +17,7 @@ router.delete("/task/:id", async (req, res) => {
       return res.status(400).json("Error: task not found");
     }
 
-    await db.Tasks.destroy({
+    await Tasks.destroy({
       where: {
         uuid: id,
       },

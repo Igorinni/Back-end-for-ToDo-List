@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { bodyRequest, validateRequest } = require("../middlewares/validateRequest.middleware.js");
+const { bodyRequest, validateRequest } = require("../middlewares/validation.middleware.js");
 const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
+const classTasks = require("../../models/tasks")
+const Tasks = classTasks(db.sequelize)
 
 router.post(
   "/task",
@@ -19,7 +21,7 @@ router.post(
 
       const { name, done, createdAt } = req.body;
 
-      const thisName = await db.Tasks.findOne({
+      const thisName = await Tasks.findOne({
         where: { name },
       });
 
@@ -29,7 +31,7 @@ router.post(
           .json({ message: "Error: this task already exists" });
       }
 
-      await db.Tasks.create({
+      await Tasks.create({
         name,
         done,
         createdAt,
