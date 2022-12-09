@@ -4,7 +4,6 @@ This project is designed to control tasks: -receiving, -adding, -deleting, -edit
 
 
 ### The project structure itself:
-- /controllers - This folder would contain all the functions for your APIs.
 - /routes - This folder would contain all the routes that you have created using Express Router and what they do would be exported from a Controller file
 - /middlewares - This folder would contain all the middleware that you have created, whether it be authentication/some other function.
 - /config - This folder with configuration files for third party APIs/services
