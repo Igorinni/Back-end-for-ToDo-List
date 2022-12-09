@@ -3,7 +3,6 @@ const router = express.Router();
 const tasksHelper = require("../utils/tasks-helper.js");
 const shortId = require("shortid");
 const { bodyRequest, validateRequest } = require("../middlewares/validateRequest.middleware.js");
-const unhandledRejection = require("../utils/unhandledRejection");
 
 router.post(
   "/task",
@@ -32,7 +31,11 @@ router.post(
       await tasksHelper.write(newTasks);
       res.status(201).json("Task added successfully");
     } catch (error) {
-      unhandledRejection(res, error);
+      console.log(error);
+      res.status(400).json({
+        success: false,
+        message: "Failed to create a task :(",
+      });
     }
   }
 );

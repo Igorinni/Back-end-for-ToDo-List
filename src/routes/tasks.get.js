@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const tasksHelper = require("../utils/tasks-helper.js");
-const unhandledRejection = require("../utils/unhandledRejection")
 
 router.get("/tasks", async (req, res) => {
   try {
@@ -35,7 +34,11 @@ router.get("/tasks", async (req, res) => {
 
     res.status(200).json(resObj);
   } catch (error) {
-    unhandledRejection(res, error);
+    console.log(error)
+    res.status(400).json({
+      success: false,
+      message: "Failed to get tasks :(",
+    });
   }
 });
 

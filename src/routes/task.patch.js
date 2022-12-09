@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const tasksHelper = require("../utils/tasks-helper.js");
 const {bodyRequest, validateRequest} = require("../middlewares/validateRequest.middleware.js");
-const unhandledRejection = require("../utils/unhandledRejection");
 
 router.patch(
   "/task/:id",
@@ -31,17 +30,20 @@ router.patch(
           .json({ message: "Error: this task already exists" });
       }
 
-      const { name, done, createdAt } = req.body;
+      const { name, done } = req.body;
       let task = tasks.find((item) => item.uuid === req.params.id);
       task.name = name;
       task.done = done;
-      task.createdAt = createdAt;
 
       await tasksHelper.write(tasks);
 
       res.status(200).json("Update task");
     } catch (error) {
-      unhandledRejection(res, error);
+      console.log(error);
+      res.status(400).json({
+        success: false,
+        message: "Failed to update the task :(",
+      });
     }
   }
 );
