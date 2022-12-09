@@ -1,18 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const { body, validationResult } = require("express-validator");
+const { bodyRequest, validateRequest } = require("../middlewares/validateRequest.middleware.js");
+const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
 
 router.patch(
   "/task/:id",
 
-  body("name")
-    .trim()
-    .notEmpty()
-    .withMessage("Field is empty")
-    .isLength({ max: 150 })
-    .withMessage("Too many characters"),
-  body("done").notEmpty().isBoolean().withMessage("Type is not boolean"),
+  bodyRequest,
+  validateRequest,
 
   async (req, res) => {
     try {
@@ -52,8 +48,7 @@ router.patch(
 
       res.status(200).json("Update task");
     } catch (error) {
-      res.status(500).json("Error on server");
-      console.log(error);
+      unhandledRejection(res, error);
     }
   }
 );

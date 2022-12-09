@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
+
 
 router.delete("/tasks", async (req, res) => {
   try {
@@ -18,8 +20,7 @@ router.delete("/tasks", async (req, res) => {
 
     res.status(204).json("All tasks are deleted");
   } catch (error) {
-    res.status(500).json("Error on server");
-    console.log(error);
+    unhandledRejection(res, error);
   }
 });
 

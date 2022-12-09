@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
 
 router.get("/tasks", async (req, res) => {
@@ -15,8 +16,7 @@ router.get("/tasks", async (req, res) => {
 
     res.status(200).json(resObj);
   } catch (error) {
-    res.status(500).json("Error on server");
-    console.log(error);
+    unhandledRejection(res, error);
   }
 });
 
