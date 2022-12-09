@@ -2,27 +2,17 @@ const express = require("express");
 const router = express.Router();
 const tasksHelper = require("../utils/tasks-helper.js");
 const shortId = require("shortid");
-const { body, validationResult } = require("express-validator");
+const { bodyRequest, validateRequest } = require("../middlewares/validateRequest.middleware.js");
+const unhandledRejection = require("../utils/unhandledRejection");
 
 router.post(
   "/task",
 
-  body("name")
-    .trim()
-    .notEmpty()
-    .withMessage("Field is empty")
-    .isLength({ max: 150 })
-    .withMessage("Too many characters"),
-  body("done").notEmpty().isBoolean().withMessage("Type is not boolean"),
-  body("createdAt").notEmpty(),
+  bodyRequest,
+  validateRequest,
 
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-
       const tasks = await tasksHelper.read();
 
       if (tasks.find((item) => item.name === req.body.name)) {
@@ -35,15 +25,14 @@ router.post(
         uuid: shortId.generate(),
         name: req.body.name,
         done: req.body.done,
-        createdAt: req.body.createdAt,
+        createdAt: new Date(),
       };
 
       const newTasks = [...tasks, newTask];
       await tasksHelper.write(newTasks);
       res.status(201).json("Task added successfully");
     } catch (error) {
-      res.status(500).json("Error on server");
-      console.log(error);
+      unhandledRejection(res, error);
     }
   }
 );

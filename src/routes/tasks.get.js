@@ -1,15 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const tasksHelper = require("../utils/tasks-helper.js");
+const unhandledRejection = require("../utils/unhandledRejection")
 
 router.get("/tasks", async (req, res) => {
   try {
     let tasks = await tasksHelper.read();
 
-    if (req.query.order === "asc")
-      tasks.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-    if (req.query.order === "desc")
-      tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    if (req.query.order) {
+      tasks.sort((a, b) =>
+        req.query.order === "asc"
+          ? new Date(a.createdAt) - new Date(b.createdAt)
+          : new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    }
 
     if (req.query.filterBy) {
       const filterBy = req.query.filterBy === "done" ? true : false;
@@ -31,8 +35,7 @@ router.get("/tasks", async (req, res) => {
 
     res.status(200).json(resObj);
   } catch (error) {
-    res.status(500).json("Error on server");
-    console.log(error);
+    unhandledRejection(res, error);
   }
 });
 
