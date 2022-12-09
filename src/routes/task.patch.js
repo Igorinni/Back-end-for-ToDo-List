@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { bodyRequest, validateRequest } = require("../middlewares/validation.middleware.js");
+const {
+  bodyRequest,
+  validateRequest,
+} = require("../middlewares/validation.middleware.js");
 const unhandledRejection = require("../utils/unhandledRejection");
 const db = require("../../models/index");
-const classTasks = require("../../models/tasks")
-const Tasks = classTasks(db.sequelize)
+const classTasks = require("../../models/tasks");
+const Tasks = classTasks(db.sequelize);
 
 router.patch(
   "/task/:id",
@@ -14,11 +17,6 @@ router.patch(
 
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-
       const id = req.params.id;
       const { name, done, createdAt } = req.body;
       const taskExisting = await Tasks.findOne({
