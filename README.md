@@ -4,7 +4,6 @@ This project is designed to control tasks: -receiving, -adding, -deleting, -edit
 
 
 ### The project structure itself:
-
 - /controllers - This folder would contain all the functions for your APIs.
 - /routes - This folder would contain all the routes that you have created using Express Router and what they do would be exported from a Controller file
 - /middlewares - This folder would contain all the middleware that you have created, whether it be authentication/some other function.
@@ -14,12 +13,9 @@ This project is designed to control tasks: -receiving, -adding, -deleting, -edit
 ### To start a project:
 1) Enter command: git clone https://github.com/Igorinni/Back-end-for-ToDo-List.git 
 2) Enter command to install dependencies: npm install
-3) Сreate a file "tasks.json" in folder "src/working-with-tasks"
-4) Enter command: npm run serve
-
+3) Enter command: node index
 
 ### Server interaction
-
 To get a list of all tasks: 
 1) use the GET method 
 2) enter the URL: http://localhost:5000/tasks
