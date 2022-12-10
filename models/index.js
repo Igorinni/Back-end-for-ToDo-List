@@ -2,6 +2,8 @@ const Sequelize = require("sequelize");
 const { development, production } = require("../config/config.js");
 const NODE_ENV = process.env.NODE_ENV || "development";
 
+let sequelize;
+
 if (NODE_ENV === "development") {
   sequelize = new Sequelize(
     development.database,

@@ -13,10 +13,10 @@ module.exports = {
     },
   },
   production: {
-    username: process.env.DATABASE_PROD_USERNAME,
-    password: process.env.DATABASE_PROD_PASSWORD,
-    database: process.env.DATABASE_PROD_DATABASE,
-    host: process.env.DATABASE_PROD_HOST,
+    username: process.env.DATABASE_DEV_USERNAME,
+    password: process.env.DATABASE_DEV_PASSWORD,
+    database: process.env.DATABASE_DEV_DATABASE,
+    host: process.env.DATABASE_DEV_HOST,
     dialect: "postgres",
     dialectOptions: {
       ssl: {
