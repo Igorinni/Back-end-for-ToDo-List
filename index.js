@@ -5,11 +5,11 @@ const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
-const db = require("./models/index");
+const { sequelize } = require("./models/index");
 
-const beginтing = (async function () {
+const beginning = (async function () {
   try {
-    await db.sequelize.authenticate();
+    await sequelize.authenticate();
     app.use(cors());
     app.use(express.json());
 

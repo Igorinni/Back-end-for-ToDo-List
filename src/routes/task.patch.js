@@ -4,9 +4,7 @@ const {
   bodyRequest,
   validateRequest,
 } = require("../middlewares/validation.middleware.js");
-const db = require("../../models/index");
-const classTasks = require("../../models/tasks");
-const Tasks = classTasks(db.sequelize);
+const Tasks = require("../../models/tasks");
 
 router.patch(
   "/task/:id",

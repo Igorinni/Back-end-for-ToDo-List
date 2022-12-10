@@ -4,9 +4,7 @@ const {
   bodyRequest,
   validateRequest,
 } = require("../middlewares/validation.middleware.js");
-const db = require("../../models/index");
-const classTasks = require("../../models/tasks");
-const Tasks = classTasks(db.sequelize);
+const Tasks = require("../../models/tasks");
 
 router.post(
   "/task",
@@ -33,7 +31,7 @@ router.post(
         done,
         createdAt: new Date(),
       });
-      
+
       res.status(201).json("Task added successfully");
     } catch (error) {
       console.log(error);
