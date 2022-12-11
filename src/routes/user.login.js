@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const authMiddlewares = require("../middlewares/auth.middlewares.js");
 
 const generateToken = (id, username) => {
   const payload = {
@@ -15,6 +16,7 @@ const generateToken = (id, username) => {
 
 router.post("/login", async (req, res) => {
   try {
+
     const { username, password } = req.body;
     const user = await User.findOne({ where: { username } });
     if (!user) {
@@ -27,7 +29,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = generateToken(user.userId, user.username);
-    res.json({ token });
+    res.json({ token: `Bearer ${token}` });
   } catch (error) {
     console.log(error);
     res.status(400).json({
