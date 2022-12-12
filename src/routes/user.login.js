@@ -3,9 +3,8 @@ const router = express.Router();
 const User = require("../../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const authMiddlewares = require("../middlewares/auth.middlewares.js");
 
-const generateToken = (id, username) => {
+const generateAccessToken = (id, username) => {
   const payload = {
     id,
     username,
@@ -28,7 +27,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    const token = generateToken(user.userId, user.username);
+    const token = generateAccessToken(user.id, user.username);
     res.json({ token: `Bearer ${token}` });
   } catch (error) {
     console.log(error);

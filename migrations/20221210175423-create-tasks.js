@@ -26,6 +26,16 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      userId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: "cascade",
+        onDelete: "cascade",
+      }
     });
   },
   async down(queryInterface, Sequelize) {

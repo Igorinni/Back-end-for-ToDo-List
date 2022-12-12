@@ -5,19 +5,22 @@ const {
   validateRequest,
 } = require("../middlewares/validation.middleware.js");
 const Tasks = require("../../models/tasks");
+const authMiddlewares = require("../middlewares/auth.middlewares.js");
 
 router.patch(
   "/task/:id",
 
+  authMiddlewares,
   bodyRequest,
   validateRequest,
 
   async (req, res) => {
     try {
+      const userId = req.body.userId;
       const id = req.params.id;
       const { name, done } = req.body;
       const taskExisting = await Tasks.findOne({
-        where: { name: name },
+        where: { name: name, userId: userId },
       });
 
       if (taskExisting && taskExisting.uuid !== id) {
@@ -39,7 +42,7 @@ router.patch(
       await Tasks.update(
         { name, done },
         {
-          where: { uuid: id },
+          where: { uuid: id, userId: userId },
         }
       );
 

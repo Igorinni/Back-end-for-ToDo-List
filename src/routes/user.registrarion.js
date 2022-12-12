@@ -20,6 +20,7 @@ router.post(
         return res.status(400).json({ "Registration error": errors.array() });
       }
 
+      console.log(req.body)
       const { username, password } = req.body;
       const candidate = await User.findOne({ where: { username } });
       if (candidate) {

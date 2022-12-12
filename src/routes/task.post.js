@@ -5,19 +5,27 @@ const {
   validateRequest,
 } = require("../middlewares/validation.middleware.js");
 const Tasks = require("../../models/tasks");
+const authMiddlewares = require("../middlewares/auth.middlewares.js");
+const User = require("../../models/user.js");
 
 router.post(
   "/task",
 
+  authMiddlewares,
   bodyRequest,
   validateRequest,
 
   async (req, res) => {
     try {
-      const { name, done } = req.body;
+
+      const { name, done, userId } = req.body;
+
+      const user = await User.findOne({
+        where: {id: userId}
+      })
 
       const thisName = await Tasks.findOne({
-        where: { name },
+        where: { name: name, userId: userId},
       });
 
       if (thisName) {
@@ -30,6 +38,7 @@ router.post(
         name,
         done,
         createdAt: new Date(),
+        userId: user.id,
       });
 
       res.status(201).json("Task added successfully");

@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const Tasks = require("../../models/tasks");
+const authMiddlewares = require("../middlewares/auth.middlewares.js");
 
-router.delete("/task/:id", async (req, res) => {
+router.delete("/task/:id", authMiddlewares, async (req, res) => {
   try {
     const id = req.params.id;
+    const userId = req.body.userId;
 
     const thisTask = await Tasks.findOne({
-      where: { uuid: id },
+      where: { uuid: id, userId: userId },
     });
 
     if (!thisTask) {
@@ -17,6 +19,7 @@ router.delete("/task/:id", async (req, res) => {
     await Tasks.destroy({
       where: {
         uuid: id,
+        userId: userId,
       },
     });
 
