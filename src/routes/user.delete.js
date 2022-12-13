@@ -7,7 +7,7 @@ router.delete("/user/:id", async (req, res) => {
     const id = req.params.id;
 
     const user = await User.findOne({
-      where: { userId: id },
+      where: { id: id },
     });
 
     if (!user) {
@@ -16,16 +16,17 @@ router.delete("/user/:id", async (req, res) => {
 
     await User.destroy({
       where: {
-        userId: id,
+        id: id,
       },
     });
 
-    res.status(200).json("User delete");
+    res.status(204).json("User delete");
   } catch (error) {
     console.log(error);
-    res.status(400).json({
+    res.status(401).json({
       success: false,
       message: "Error on delete :(",
+      error: error?.parent?.hint,
     });
   }
 });

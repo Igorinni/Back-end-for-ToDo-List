@@ -1,26 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require("express-validator");
 const User = require("../../models/user");
 const bcrypt = require("bcryptjs");
+const tokenHelper = require("../service/token-helper");
+const validationAuth = require("../middlewares/validation.middleware.js");
 
 router.post(
   "/registration",
-  [
-    check("username", "The name cannot be empty").notEmpty(),
-    check("password", "The password must be more than 3 characters").isLength({
-      min: 3,
-      max: 30,
-    }),
-  ],
+
+  validationAuth.bodyRequestAuth,
+  validationAuth.validateRequest,
+
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ "Registration error": errors.array() });
-      }
 
-      console.log(req.body)
       const { username, password } = req.body;
       const candidate = await User.findOne({ where: { username } });
       if (candidate) {
@@ -30,17 +23,23 @@ router.post(
       }
 
       const hashPasswor = bcrypt.hashSync(password, 6);
-      await User.create({
+      const newUser = await User.create({
         username,
         password: hashPasswor,
       });
 
-      res.status(200).json({ message: "Registration was successful" });
+      const token = tokenHelper.generateAccessToken(
+        newUser.id,
+        newUser.username
+      );
+
+      res.status(201).json({ token, username: newUser.username });
     } catch (error) {
       console.log(error);
-      res.status(400).json({
+      res.status(401).json({
         success: false,
         message: "Registration error :(",
+        error: error?.parent?.hint,
       });
     }
   }

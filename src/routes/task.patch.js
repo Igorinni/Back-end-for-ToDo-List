@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {
-  bodyRequest,
-  validateRequest,
-} = require("../middlewares/validation.middleware.js");
+const validationTask = require("../middlewares/validation.middleware.js");
 const Tasks = require("../../models/tasks");
 const authMiddlewares = require("../middlewares/auth.middlewares.js");
 
@@ -11,8 +8,8 @@ router.patch(
   "/task/:id",
 
   authMiddlewares,
-  bodyRequest,
-  validateRequest,
+  validationTask.bodyRequestTask,
+  validationTask.validateRequest,
 
   async (req, res) => {
     try {
@@ -46,12 +43,13 @@ router.patch(
         }
       );
 
-      res.status(200).json("Update task");
+      res.status(201).json("Update task");
     } catch (error) {
       console.log(error);
       res.status(400).json({
         success: false,
         message: "Failed to update the task :(",
+        error: error?.parent?.hint,
       });
     }
   }

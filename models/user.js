@@ -2,7 +2,9 @@ const { sequelize } = require("./index");
 const { Model, DataTypes, Sequelize } = require("sequelize");
 const Tasks = require("./tasks")
 class User extends Model {
-  static associate(models) {}
+  static associate(models) {
+    this.hasMany(models.Tasks); 
+  }
 }
 User.init(
   {
@@ -28,5 +30,5 @@ User.init(
     modelName: "User",
   }
 );
-// User.hasMany(Tasks, {foreignKey: "userId"});
+//User.hasMany(Tasks, {foreignKey: "userId"});
 module.exports = User;

@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {
-  bodyRequest,
-  validateRequest,
-} = require("../middlewares/validation.middleware.js");
+const validationTask = require("../middlewares/validation.middleware.js");
 const Tasks = require("../../models/tasks");
 const authMiddlewares = require("../middlewares/auth.middlewares.js");
 const User = require("../../models/user.js");
@@ -12,8 +9,8 @@ router.post(
   "/task",
 
   authMiddlewares,
-  bodyRequest,
-  validateRequest,
+  validationTask.bodyRequestTask,
+  validationTask.validateRequest,
 
   async (req, res) => {
     try {
@@ -47,6 +44,7 @@ router.post(
       res.status(400).json({
         success: false,
         message: "Failed to create a task :(",
+        error: error?.parent?.hint,
       });
     }
   }
