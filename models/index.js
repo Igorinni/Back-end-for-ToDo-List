@@ -1,24 +1,6 @@
 const Sequelize = require("sequelize");
 const { development, production } = require("../config/config.js");
 const NODE_ENV = process.env.NODE_ENV || "development";
-// const options = require("../config/config.js");
-
-
-// const sequelize = new Sequelize(
-//   options.default.database,
-//   options.default.username,
-//   options.default.password,
-//   {
-//     host: options.default.host,
-//     dialect: "postgres",
-//     dialectOptions: {
-//       ssl: {
-//         require: true,
-//         rejectUnauthorized: false,
-//       },
-//     },
-//   }
-// );
 
 let sequelize;
 

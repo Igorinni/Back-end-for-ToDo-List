@@ -3,7 +3,6 @@ const router = express.Router();
 const validationTask = require("../middlewares/validation.middleware.js");
 const Tasks = require("../../models/tasks");
 const authMiddlewares = require("../middlewares/auth.middlewares.js");
-const User = require("../../models/user.js");
 
 router.post(
   "/task",
@@ -16,10 +15,6 @@ router.post(
     try {
       const userId = res.locals.user.userId;
       const { name, done } = req.body;
-
-      const user = await User.findOne({
-        where: { id: userId },
-      });
 
       const thisName = await Tasks.findOne({
         where: { name: name, userId: userId },
@@ -35,7 +30,7 @@ router.post(
         name,
         done,
         createdAt: new Date(),
-        userId: user.id,
+        userId: userId,
       });
 
       res.status(201).json("Task added successfully");

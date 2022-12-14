@@ -10,5 +10,5 @@ const generateAccessToken = (userId, username) => {
 };
 
 module.exports = {
-  generateAccessToken
+  generateAccessToken,
 };
