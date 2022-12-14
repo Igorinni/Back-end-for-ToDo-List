@@ -13,7 +13,7 @@ router.patch(
 
   async (req, res) => {
     try {
-      const userId = req.body.userId;
+      const userId = res.locals.user.userId;
       const id = req.params.id;
       const { name, done } = req.body;
       const taskExisting = await Tasks.findOne({
@@ -49,7 +49,6 @@ router.patch(
       res.status(400).json({
         success: false,
         message: "Failed to update the task :(",
-        error: error?.parent?.hint,
       });
     }
   }

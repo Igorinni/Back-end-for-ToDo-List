@@ -13,7 +13,6 @@ router.post(
 
   async (req, res) => {
     try {
-
       const { username, password } = req.body;
       const candidate = await User.findOne({ where: { username } });
       if (candidate) {
@@ -33,13 +32,12 @@ router.post(
         newUser.username
       );
 
-      res.status(201).json({ token, username: newUser.username });
+      res.status(201).json({ token, username: newUser.username, userId: newUser.id });
     } catch (error) {
       console.log(error);
       res.status(401).json({
         success: false,
         message: "Registration error :(",
-        error: error?.parent?.hint,
       });
     }
   }

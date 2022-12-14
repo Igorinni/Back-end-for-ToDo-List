@@ -6,7 +6,7 @@ const authMiddlewares = require("../middlewares/auth.middlewares.js");
 router.delete("/task/:id", authMiddlewares, async (req, res) => {
   try {
     const taskId = req.params.id;
-    const userId = req.body.userId;
+    const userId = res.locals.user.userId;
 
     const thisTask = await Tasks.findOne({
       where: { uuid: taskId, userId: userId },
@@ -29,7 +29,6 @@ router.delete("/task/:id", authMiddlewares, async (req, res) => {
     res.status(400).json({
       success: false,
       message: "Failed to delete the task :(",
-      error: error?.parent?.hint,
     });
   }
 });

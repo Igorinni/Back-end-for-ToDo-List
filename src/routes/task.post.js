@@ -14,15 +14,15 @@ router.post(
 
   async (req, res) => {
     try {
-
-      const { name, done, userId } = req.body;
+      const userId = res.locals.user.userId;
+      const { name, done } = req.body;
 
       const user = await User.findOne({
-        where: {id: userId}
-      })
+        where: { id: userId },
+      });
 
       const thisName = await Tasks.findOne({
-        where: { name: name, userId: userId},
+        where: { name: name, userId: userId },
       });
 
       if (thisName) {
@@ -44,7 +44,6 @@ router.post(
       res.status(400).json({
         success: false,
         message: "Failed to create a task :(",
-        error: error?.parent?.hint,
       });
     }
   }

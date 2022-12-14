@@ -26,13 +26,11 @@ router.post(
 
       const token = tokenHelper.generateAccessToken(user.id, user.username);
 
-      // res.status(200).json({ token: token });
-      res.status(200).json({ token, username: user.username });
+      res.status(200).json({ token, username: user.username, userId: user.id });
     } catch (error) {
       res.status(401).json({
         success: false,
         message: "Login error :(",
-        error: error?.parent?.hint,
       });
     }
   }

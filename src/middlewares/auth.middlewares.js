@@ -1,4 +1,4 @@
-const tokenHelper = require("../service/token-helper");
+const jwt = require("jsonwebtoken");
 
 const authMiddlewares = (req, res, next) => {
   try {
@@ -12,33 +12,20 @@ const authMiddlewares = (req, res, next) => {
 
     const accessToken = authorizationHeader.split(" ")[1];
     if (!accessToken) {
-      // throw new Error({ status: 400, message: "Token not found" });
-      return res
-        .status(400)
-        .json({ message: "Token not found" });
+      return res.status(400).json({ message: "Token not found" });
     }
 
-    const validToken = tokenHelper.validToken(accessToken);
-    // const token = jwt.verify(accessToken, process.env.KEY_SECRET);
-    //const user = token.payload;
-    if (!validToken) {
-      return res
-        .status(401)
-        .json({ message: "Please re-login to your account" });
-    }
+    jwt.verify(accessToken, process.env.KEY_SECRET);
 
-    req.body.userId = validToken.userId;
-    req.body.username = validToken.username;
-    // res.locals.user = token.payload;
+    const payload = jwt.decode(accessToken);
+
+    res.locals.user = payload;
     next();
   } catch (error) {
-    res
-      .status(401)
-      .json({
-        message: "Authorization failed, invalid token :( ",
-        error: error?.parent?.hint,
-      });
-    // .error['status']
+    res.status(401).json({
+      message:
+        " Authorization failed. Please re-login to your account. Invalid token :( ",
+    });
   }
 };
 
