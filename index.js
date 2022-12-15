@@ -2,14 +2,14 @@ const express = require("express");
 const recursive = require("recursive-readdir-sync");
 require("dotenv").config();
 const cors = require("cors");
+const db = require("./models/index");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
-const { sequelize } = require("./models/index");
 
 const beginning = (async function () {
   try {
-    await sequelize.authenticate();
+    await db.sequelize.authenticate();
     app.use(cors());
     app.use(express.json());
 

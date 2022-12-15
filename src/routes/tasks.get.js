@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const Tasks = require("../../models/tasks");
 const authMiddlewares = require("../middlewares/auth.middlewares.js");
+
+const db = require("../../models/index");
+const classTasks = require("../../models/tasks");
+const Tasks = classTasks(db.sequelize);
 
 router.get("/tasks", authMiddlewares, async (req, res) => {
   try {

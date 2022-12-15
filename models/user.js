@@ -1,33 +1,46 @@
-const { sequelize } = require("./index");
-const { Model, DataTypes, Sequelize } = require("sequelize");
+"use strict";
+const { Model, Sequelize } = require("sequelize");
 
-class User extends Model {
-  static associate(models) {
-    this.hasMany(models.Tasks);
+const db = require("./index");
+const classTasks111 = require("./tasks");
+const Task = classTasks111(db.sequelize);
+
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    static associate(models) {
+      // this.hasMany(models.Task);
+    }
   }
-}
-User.init(
-  {
-    id: {
-      allowNull: false,
-      primaryKey: true,
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-    },
+  User.init(
+    {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      
+      username: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
 
-    username: {
-      allowNull: false,
-      type: Sequelize.STRING,
+      password: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
     },
+    {
+      sequelize,
+      modelName: "User",
+    }
+  );
 
-    password: {
-      allowNull: false,
-      type: Sequelize.STRING,
-    },
-  },
-  {
-    sequelize,
-    modelName: "User",
-  }
-);
-module.exports = User;
+  User.hasMany(Task);
+
+ /*  User.associate = models => {
+    User.hasMany(models.Task);
+  }; */
+
+  return User;
+};

@@ -1,42 +1,55 @@
-const { sequelize } = require("./index");
-const { Model, DataTypes, Sequelize } = require("sequelize");
+"use strict";
+const { Model, Sequelize } = require("sequelize");
 
-class Tasks extends Model {
-  static associate(models) {
-    this.belongsTo(models.User);
+const db = require("./index");
+const classTasks = require("./user");
+const User = classTasks(db.sequelize);
+
+module.exports = (sequelize, DataTypes) => {
+  class Task extends Model {
+    static associate(models) {
+      // this.belongsTo(models.User);
+    }
   }
-}
-Tasks.init(
-  {
-    uuid: {
-      allowNull: false,
-      primaryKey: true,
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-    },
+  Task.init(
+    {
+      uuid: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
 
-    name: {
-      allowNull: false,
-      type: Sequelize.STRING,
-    },
+      done: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
 
-    done: {
-      allowNull: false,
-      type: Sequelize.BOOLEAN,
-    },
-
-    userId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: "Users",
-        key: "id",
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
     },
-  },
-  {
-    sequelize,
-    modelName: "Tasks",
-  }
-);
-module.exports = Tasks;
+    {
+      sequelize,
+      modelName: "Task",
+    }
+  );
+
+  Task.belongsTo(User);
+
+ /*  Task.associate = models => {
+    Task.belongsTo(models.User);
+  };
+ */
+  return Task;
+};

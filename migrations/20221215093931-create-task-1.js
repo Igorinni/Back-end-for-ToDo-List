@@ -6,10 +6,11 @@ module.exports = {
     await queryInterface.createTable("Tasks", {
       uuid: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: Sequelize.INTEGER,
       },
+      
       name: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -27,15 +28,15 @@ module.exports = {
         type: Sequelize.DATE,
       },
       userId: {
-        type: DataTypes.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users',
-          key: 'id',
+          model: "Users",
+          key: "id",
         },
         onUpdate: "cascade",
         onDelete: "cascade",
-      }
+      },
     });
   },
   async down(queryInterface, Sequelize) {

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../../models/user");
+const db = require("../../models/index");
+const classTasks = require("../../models/user");
+const User = classTasks(db.sequelize);
 
 router.delete("/user/:id", async (req, res) => {
   try {

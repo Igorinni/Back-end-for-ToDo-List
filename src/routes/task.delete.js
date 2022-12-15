@@ -1,12 +1,30 @@
 const express = require("express");
 const router = express.Router();
-const Tasks = require("../../models/tasks");
 const authMiddlewares = require("../middlewares/auth.middlewares.js");
+
+const db = require("../../models/index");
+const classTasks = require("../../models/tasks");
+const Tasks = classTasks(db.sequelize);
+const classTasks2 = require("../../models/user");
+const User = classTasks2(db.sequelize);
 
 router.delete("/task/:id", authMiddlewares, async (req, res) => {
   try {
     const taskId = req.params.id;
     const userId = res.locals.user.userId;
+
+    const findT = await User.findOne({
+        include: [
+          {
+            association: "Tasks",
+            where: {
+              uuid: taskId
+            },
+          },
+        ],
+      });
+
+    console.log("--------------------", findT)
 
     const thisTask = await Tasks.findOne({
       where: { uuid: taskId, userId: userId },
