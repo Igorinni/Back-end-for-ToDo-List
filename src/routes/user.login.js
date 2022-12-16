@@ -4,9 +4,9 @@ const bcrypt = require("bcryptjs");
 const tokenHelper = require("../service/token-helper");
 const validationAuth = require("../middlewares/validation.middleware.js");
 
-const db = require("../../models/index");
+const dbHelper = require("../../models/index");
 const classTasks = require("../../models/user");
-const User = classTasks(db.sequelize);
+const User = classTasks(dbHelper.db.sequelize);
 
 router.post(
   "/login",

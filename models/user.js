@@ -1,14 +1,14 @@
 "use strict";
 const { Model, Sequelize } = require("sequelize");
 
-const db = require("./index");
+const dbHelper = require("./index");
 const classTasks111 = require("./tasks");
-const Task = classTasks111(db.sequelize);
+const Task = classTasks111(dbHelper.db.sequelize);
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // this.hasMany(models.Task);
+      this.hasMany(models.Task);
     }
   }
   User.init(
@@ -35,12 +35,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
     }
   );
-
-  User.hasMany(Task);
-
- /*  User.associate = models => {
-    User.hasMany(models.Task);
-  }; */
-
   return User;
 };

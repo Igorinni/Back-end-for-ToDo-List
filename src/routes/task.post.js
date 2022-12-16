@@ -3,9 +3,9 @@ const router = express.Router();
 const validationTask = require("../middlewares/validation.middleware.js");
 const authMiddlewares = require("../middlewares/auth.middlewares.js");
 
-const db = require("../../models/index");
+const dbHelper = require("../../models/index");
 const classTasks = require("../../models/tasks");
-const Tasks = classTasks(db.sequelize);
+const Tasks = classTasks(dbHelper.db.sequelize);
 
 router.post(
   "/task",

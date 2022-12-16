@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const authMiddlewares = require("../middlewares/auth.middlewares.js");
 
-const db = require("../../models/index");
+const dbHelper = require("../../models/index");
 const classTasks = require("../../models/tasks");
-const Tasks = classTasks(db.sequelize);
+const Tasks = classTasks(dbHelper.db.sequelize);
 const classTasks2 = require("../../models/user");
-const User = classTasks2(db.sequelize);
+const User = classTasks2(dbHelper.db.sequelize);
 
 router.delete("/task/:id", authMiddlewares, async (req, res) => {
   try {

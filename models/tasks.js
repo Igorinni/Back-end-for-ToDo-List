@@ -1,14 +1,14 @@
 "use strict";
 const { Model, Sequelize } = require("sequelize");
 
-const db = require("./index");
+const dbHelper = require("./index");
 const classTasks = require("./user");
-const User = classTasks(db.sequelize);
+const User = classTasks(dbHelper.db.sequelize);
 
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
     static associate(models) {
-      // this.belongsTo(models.User);
+      this.belongsTo(models.User);
     }
   }
   Task.init(
@@ -45,11 +45,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  Task.belongsTo(User);
-
- /*  Task.associate = models => {
-    Task.belongsTo(models.User);
-  };
- */
   return Task;
 };
