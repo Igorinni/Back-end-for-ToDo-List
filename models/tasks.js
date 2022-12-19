@@ -1,10 +1,6 @@
 "use strict";
 const { Model, Sequelize } = require("sequelize");
 
-const dbHelper = require("./index");
-const classTasks = require("./user");
-const User = classTasks(dbHelper.db.sequelize);
-
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
     static associate(models) {
